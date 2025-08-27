@@ -1,0 +1,26 @@
+# Docker Compose file version - specifies the format version and features available
+#version: "3.9"
+
+services:
+  # Main application service definition - represents our Django REST API
+  app:
+    # Build instructions for creating the container image
+    build:
+      # The build context (location of Dockerfile) - current directory
+      context: .
+      args:
+        - DEV=true  # Build argument to indicate development mode
+    # Port mapping - connects host machine port to container port
+    # Format is "host_port:container_port"
+    ports:
+      - "8000:8000"  # Maps localhost:8000 to container's port 8000
+    # Volume mapping - links host directory to container directory
+    # This creates a live connection so code changes are reflected immediately
+    volumes:
+      - ./app:/app  # Maps local ./app directory to /app in the container
+    # Command to run when container starts
+    # Overrides the default command in the Dockerfile
+    # Runs Django development server on all interfaces
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
