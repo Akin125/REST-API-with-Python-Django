@@ -23,4 +23,24 @@ services:
     # Runs Django development server on all interfaces
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db  # Database host (service name defined below)
+      - DB_NAME=dev_db  # Database name
+      - DB_USER=dev_user  # Database user
+      - DB_PASSWORD=changeme  # Database password
+    depends_on:
+      - db  # Ensures the database service starts before this app service
 
+  # Database service definition - represents our PostgreSQL database
+  db:
+    image: postgres:13-alpine  # Uses official PostgreSQL image, version 13 on Alpine Linux
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data  # Persists database data on host
+    environment:
+      - POSTGRESDB=dev_db  # Database name
+      - POSTGRES_USER=dev_user  # Database user
+      - POSTGRES_PASSWORD=changeme  # Database password
+
+
+volumes:
+  dev-db-data:
