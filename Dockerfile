@@ -29,6 +29,14 @@ ARG DEV=false
 # 3. Install required Python packages (We install everything from our shopping list)
 # 4. Clean up temporary files (We clean up our mess after installing)
 # 5. Create a non-root user for security (We create a regular user instead of using the powerful admin)
+#Install PostgreSQL client:
+     #apk add --update --no-cache postgresql-client
+     #Installs the PostgreSQL client tools, needed if your app interacts with a PostgreSQL database.
+
+    #Install build dependencies:
+    #apk add --update --no-cache --virtual .tmp-build-deps build-base postgresql-dev musl-dev
+    #Installs temporary packages required to build Python packages with native extensions (like psycopg2).
+
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     apk add --update --no-cache postgresql-client && \
